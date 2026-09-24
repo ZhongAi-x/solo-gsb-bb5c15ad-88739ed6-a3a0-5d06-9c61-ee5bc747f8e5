@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>家谱关系核对</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>家谱关系核对</h1>
+    <p class="subtitle">
+      录入成员与“父母 → 子女”关系（每名子女至多两位父母），选择两人查询总代数最少的全部共同祖先及最短亲缘路径。
+    </p>
+  </header>
+
+  <main class="layout">
+    <!-- 成员管理 -->
+    <section class="card" id="members-card">
+      <h2>① 成员 <span class="count" id="member-count">0/30</span></h2>
+      <div class="alert" id="members-alert" hidden></div>
+      <form id="member-form" class="row-form">
+        <input type="text" id="member-name" maxlength="30" placeholder="输入姓名，如：张明" autocomplete="off" />
+        <button type="submit" class="btn primary">添加成员</button>
+      </form>
+      <div class="card-actions">
+        <button type="button" class="btn small" id="load-sample">载入示例家谱</button>
+        <button type="button" class="btn small danger-ghost" id="clear-all">清空全部</button>
+      </div>
+      <ul class="item-list" id="member-list"></ul>
+    </section>
+
+    <!-- 关系管理 -->
+    <section class="card" id="edges-card">
+      <h2>② 父母 → 子女 关系</h2>
+      <div class="alert" id="edges-alert" hidden></div>
+      <form id="edge-form" class="edge-form">
+        <label>
+          父母
+          <select id="edge-parent"></select>
+        </label>
+        <span class="arrow">→</span>
+        <label>
+          子女
+          <select id="edge-child"></select>
+        </label>
+        <button type="submit" class="btn primary">添加关系</button>
+      </form>
+      <p class="hint">系统会拒绝自指、重复边以及会形成祖先环路的关系；每位子女最多登记两位父母。</p>
+      <ul class="item-list" id="edge-list"></ul>
+    </section>
+
+    <!-- 共同祖先查询 -->
+    <section class="card wide" id="query-card">
+      <h2>③ 共同祖先查询</h2>
+      <div class="alert" id="query-alert" hidden></div>
+      <form id="query-form" class="edge-form">
+        <label>
+          成员甲
+          <select id="query-a"></select>
+        </label>
+        <span class="arrow">⇄</span>
+        <label>
+          成员乙
+          <select id="query-b"></select>
+        </label>
+        <button type="submit" class="btn primary">查询共同祖先</button>
+      </form>
+      <p class="hint">沿父母链向上追溯，保留总代数（甲方代数 + 乙方代数）最少的全部共同祖先；同代数的不同最短路径全部列出。</p>
+      <div id="query-result"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>本地家谱关系核对 · Node.js + Express + 原生前端</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

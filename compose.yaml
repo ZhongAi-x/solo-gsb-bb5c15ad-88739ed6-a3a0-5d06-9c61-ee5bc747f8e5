@@ -1,0 +1,22 @@
+services:
+  family-tree:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: family-tree-checker:latest
+    container_name: family-tree-checker
+    ports:
+      # 宿主机端口:容器端口；如宿主机 3000 被占用，修改冒号左侧即可
+      - "3000:3000"
+    environment:
+      # 服务监听配置（容器内固定监听 3000，由端口映射对外暴露）
+      PORT: "3000"
+      HOST: "0.0.0.0"
+      # 家谱数据持久化文件；留空则仅保存在内存，容器重启后清空
+      PERSIST_FILE: "/data/family.json"
+    volumes:
+      - family-data:/data
+    restart: unless-stopped
+
+volumes:
+  family-data:
